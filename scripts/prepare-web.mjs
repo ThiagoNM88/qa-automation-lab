@@ -7,9 +7,10 @@ const apiLine=script.split('\n').find(line=>line.startsWith('async function api(
 if(!apiLine)throw Error('Adaptador local não encontrado');
 const cloudScript="import {api} from './supabase-client.js';\n"+script.replace(apiLine,'');
 html=html.replace(/<script type="module">[\s\S]*?<\/script>/,'<script type="module" src="./generated-checkout.js"></script>');
-html=html.replace('Ambiente fictício e local.','Ambiente fictício de portfólio.').replace('Os pedidos ficam apenas na memória e desaparecem quando o servidor reinicia.','Pedidos são persistidos no Supabase e vinculados à sua conta. Nenhuma cobrança real.');
+html=html.replace('Ambiente fictício e local.','Ambiente fictício de portfólio.').replace('Os pedidos ficam apenas na memória e desaparecem quando o servidor reinicia.','Pedidos de estudo vinculados à sua conta. Explore, simule e teste à vontade.');
 const auth=await readFile(new URL('web/auth-panel.html',root),'utf8');
-html=html.replace('<main>','<main>'+auth).replace('</main>','<section class="panel"><h2>Meus pedidos</h2><button id="refresh-orders">Atualizar meus pedidos</button><p id="history-status" role="status"></p><ul id="order-history"></ul></section></main>');
+const footer=html.match(/<footer>[\s\S]*?<\/footer>/)?.[0]??'';
+html=html.replace(footer,'').replace('</main>',auth+'<section class="panel history-panel"><h2>Meus pedidos</h2><button id="refresh-orders">Atualizar meus pedidos</button><p id="history-status" role="status"></p><ul id="order-history"></ul></section>'+footer+'</main>');
 await mkdir(new URL('web/',root),{recursive:true});
 await writeFile(new URL('web/index.html',root),html);
 await writeFile(new URL('web/generated-checkout.js',root),cloudScript);
