@@ -1,4 +1,6 @@
-<section class="panel account-panel" aria-labelledby="account-title">
+<dialog id="account-dialog" aria-labelledby="account-title">
+ <button id="close-account" type="button" aria-label="Fechar minha conta">Fechar ×</button>
+ <section class="account-panel">
  <h2 id="account-title">Seu espaço na Aurora</h2>
  <p id="account-status" role="status">Verificando sessão…</p>
  <form id="auth-form">
@@ -11,4 +13,5 @@
  </form>
  <button id="sign-out" hidden>Sair da conta</button>
  <p id="auth-message" role="status" style="white-space:pre-wrap"></p>
-</section>
+ </section>
+</dialog>

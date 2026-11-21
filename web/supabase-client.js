@@ -3,12 +3,15 @@ const url=import.meta.env.VITE_SUPABASE_URL,key=import.meta.env.VITE_SUPABASE_PU
 const configured=Boolean(url?.startsWith('https://')&&key?.startsWith('sb_publishable_'));
 const supabase=configured?createClient(url,key):null;
 const $=id=>document.getElementById(id);
+function openAccount(){if(!$('account-dialog').open)$('account-dialog').showModal();}
+$('open-account').onclick=openAccount;
+$('close-account').onclick=()=>$('account-dialog').close();
 let currentUser=null,authBusy=false,historyVersion=0;
 const errorMessage=error=>error?.message||'Não foi possível concluir a operação.';
 function assertConfig(){if(!supabase)throw Error('Integração pendente: configure URL e chave pública do Supabase na hospedagem e gere um novo build.');}
 function check(error){if(error)throw Error(errorMessage(error));}
 function asOrder(data){return {...data,paymentAttempts:data.payment_attempts};}
-async function requireUser(){assertConfig();const {data,error}=await supabase.auth.getUser();check(error);if(!data.user)throw Error('Entre na sua conta para confirmar ou consultar pedidos.');return data.user;}
+async function requireUser(){assertConfig();const {data,error}=await supabase.auth.getUser();check(error);if(!data.user){openAccount();throw Error('Entre na sua conta para confirmar ou consultar pedidos.');}return data.user;}
 export async function api(path,options={}){
  assertConfig();let data,error;
  if(path==='/api/catalog'){
@@ -33,6 +36,7 @@ export async function api(path,options={}){
 function renderSession(user){
  currentUser=user;historyVersion++;
  $('auth-form').hidden=Boolean(user);$('sign-out').hidden=!user;
+ $('open-account').textContent=user?'Minha conta ✓':'Minha conta';
  $('account-status').textContent=user?'Conectado como '+user.email:'Entre para confirmar pedidos e consultar seu histórico.';
  $('auth-password').value='';$('order-history').replaceChildren();
  $('order-result').textContent='Nenhuma tentativa consultada nesta sessão.';
