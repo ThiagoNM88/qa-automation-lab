@@ -3,7 +3,9 @@ const url=import.meta.env.VITE_SUPABASE_URL,key=import.meta.env.VITE_SUPABASE_PU
 const configured=Boolean(url?.startsWith('https://')&&key?.startsWith('sb_publishable_'));
 const supabase=configured?createClient(url,key):null;
 const $=id=>document.getElementById(id);
-function openAccount(){if(!$('account-dialog').open)$('account-dialog').showModal();}
+let returnToCart=false;
+function openAccount(){if($('cart-dialog').open){returnToCart=true;$('cart-dialog').close();}if(!$('account-dialog').open)$('account-dialog').showModal();}
+$('account-dialog').addEventListener('close',()=>{if(returnToCart){returnToCart=false;$('cart-dialog').showModal();}});
 $('open-account').onclick=openAccount;
 $('close-account').onclick=()=>$('account-dialog').close();
 let currentUser=null,authBusy=false,historyVersion=0;
@@ -40,6 +42,7 @@ function renderSession(user){
  $('account-status').textContent=user?'Conectado como '+user.email:'Entre para confirmar pedidos e consultar seu histórico.';
  $('auth-password').value='';$('order-history').replaceChildren();
  $('order-result').textContent='Nenhuma tentativa consultada nesta sessão.';
+ $('purchase-status').hidden=true;
  $('resolve').hidden=true;$('consult').disabled=true;$('new-attempt').disabled=true;
  // IDs from a previous account must not be treated as the current account's state.
  $('auth-message').textContent='';refreshHistory();
