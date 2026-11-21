@@ -1,6 +1,6 @@
-# Cenários iniciais — ainda não executados
+# Cenários iniciais e rastreabilidade
 
-Todos são propostas para revisão. Nenhum possui resultado observado ou evidência de execução nesta etapa. API/HTTP e detalhes de estado pendentes estão em requisitos.md.
+Esta tabela foi criada no planejamento. A cobertura parcial já executada em unidade e integração está em [verificacao-incremento-1.md](verificacao-incremento-1.md). Os fluxos completos de interface continuam pendentes; não considerar todos os cenários aprovados. Contrato e estados estão em [contrato-api.md](contrato-api.md).
 
 | ID | Requisitos | Cenário e dados | Resultado esperado | Nível inicial |
 | --- | --- | --- | --- | --- |
@@ -13,9 +13,9 @@ Todos são propostas para revisão. Nenhum possui resultado observado ou evidên
 | CT-07 | R-07 | Confirmar carrinho vazio | Mensagem compreensível e nenhum pedido criado | API + UI |
 | CT-08 | R-02, R-06 | Enviar total/preço adulterado para a API | Servidor usa catálogo e recalcula; valor adulterado não determina a cobrança simulada | API |
 | CT-09 | R-08 | Pagamento simulado recusado | Pedido não confirmado e feedback de recusa; sem efeito de pagamento aprovado | API + UI |
-| CT-10 | R-08, R-09 | Timeout, consulta e reenvio da mesma chave | Mostrar estado desconhecido até resolução; não iniciar segunda tentativa. Resultado final depende do contrato do simulador, pendente de refinamento | API + UI após refinamento |
+| CT-10 | R-08, R-09 | Timeout, consulta e reenvio da mesma chave | Permanecer pending até resolução explícita; resolver para confirmed sem iniciar segunda tentativa | API + UI |
 | CT-11 | R-09 | Mesma chave e mesmo conteúdo enviados sequencialmente | Mesmo pedido e somente uma tentativa de pagamento | API |
-| CT-12 | R-09 | Mesma chave e mesmo conteúdo em duas solicitações simultâneas | Um pedido e uma tentativa; verificar efeitos após as duas respostas | API após definir isolamento |
+| CT-12 | R-09 | Mesma chave e mesmo conteúdo em duas solicitações simultâneas | Um pedido e uma tentativa no processo local; verificar efeitos após as duas respostas | API |
 | CT-13 | R-09 | Reutilizar chave com carrinho diferente | Conflito, sem alterar pedido anterior ou iniciar nova tentativa | API |
 | CT-14 | R-10 | Navegar e concluir o fluxo usando teclado | Controles operáveis, foco visível e mensagens relacionadas aos campos | Exploratório + UI complementar |
 
@@ -26,5 +26,5 @@ Todos são propostas para revisão. Nenhum possui resultado observado ou evidên
 - Passos: confirmar o carrinho com a chave; guardar identificador e resposta; repetir o mesmo conteúdo e chave; consultar o pedido e as tentativas registradas.
 - Esperado: ambas as respostas referem-se ao mesmo pedido; uma tentativa de pagamento; total de 11000 centavos; nenhum pedido adicional.
 - Evidências futuras: versão do alvo, requisições/respostas sanitizadas, identificador de correlação e estado final.
-- Status: planejado. Seletores, endpoints e asserções concretas serão definidos na implementação.
+- Status: verificações de estado e HTTP implementadas, com evidência no relatório do incremento. Reenvio pela interface ainda pendente de execução em navegador.
 

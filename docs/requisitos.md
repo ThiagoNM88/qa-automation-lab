@@ -21,7 +21,7 @@ Comprador consulta seu carrinho, aplica um cupom e confirma um pedido com pagame
 
 ## Dados de referência
 
-Catálogo e carrinho abaixo são fixtures propostas; o servidor ainda será implementado.
+Catálogo abaixo implementado no alvo local. Os valores são fictícios e representados em centavos inteiros no servidor.
 
 | SKU | Preço unitário |
 | --- | --- |
@@ -41,10 +41,12 @@ Exemplos calculados independentemente:
 
 Autenticação, reserva de estoque, estorno, gateway real, cálculo de frete por CEP, regras fiscais, testes de carga e comprovação de conformidade integral de acessibilidade. Isso delimita cobertura e riscos residuais; não representa validação desses temas.
 
-## Refinamentos pendentes
+## Decisões do primeiro incremento
 
-- Definir contrato HTTP e esquema de erros antes dos testes de API.
-- Definir o prazo de retenção das chaves de idempotência; a primeira implementação local deverá explicitar seu comportamento após reinício.
-- Definir o mecanismo de isolamento de tentativas simultâneas na implementação.
-- Descrever como o simulador resolve uma tentativa com timeout e como a consulta informa esse estado.
+- Contrato HTTP e erros: [contrato-api.md](contrato-api.md).
+- Chaves retidas em memória durante a vida do processo, sem expiração automática. Reiniciar limpa o histórico. Não há garantia de idempotência após reinício.
+- Verificação e reserva da chave ocorrem de forma síncrona no mesmo processo Node. Não há coordenação distribuída; isso não é uma implementação de gateway financeiro.
+- Timeout permanece `pending` até resolução explícita no endpoint didático. Resolver simula aprovação tardia e não inicia outra tentativa. Nenhum temporizador decide o resultado.
+- SKU repetido em linhas diferentes é rejeitado; atualizar quantidade da linha existente. Valores de preço e total enviados pelo cliente são ignorados.
+- A API de orçamento é sem estado: erro de cupom não modifica carrinho. A interface mantém o cupom anterior ao rejeitar substituição inválida; a validação desse comportamento em navegador ainda está pendente.
 

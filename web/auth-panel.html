@@ -1,0 +1,14 @@
+<section class="panel" aria-labelledby="account-title">
+ <h2 id="account-title">Sua conta na Loja Aurora</h2>
+ <p id="account-status" role="status">Verificando sessão…</p>
+ <form id="auth-form">
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px">
+   <div><label for="auth-email">E-mail</label><input id="auth-email" type="email" autocomplete="email" required maxlength="254" style="display:block;width:100%;box-sizing:border-box;padding:12px"></div>
+   <div><label for="auth-password">Senha</label><input id="auth-password" type="password" autocomplete="current-password" required minlength="8" maxlength="128" style="display:block;width:100%;box-sizing:border-box;padding:12px"></div>
+  </div>
+  <div class="actions"><button id="sign-in" type="submit">Entrar</button><button id="sign-up" type="button">Criar conta de estudo</button></div>
+  <p>Use uma senha exclusiva para este laboratório. O cadastro pode exigir confirmação por e-mail. O serviço padrão de e-mail do Supabase limita destinatários aos membros autorizados da organização; cadastro público depende de configurar um provedor de e-mail.</p>
+ </form>
+ <button id="sign-out" hidden>Sair da conta</button>
+ <p id="auth-message" role="status" style="white-space:pre-wrap"></p>
+</section>

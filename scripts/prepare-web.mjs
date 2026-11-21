@@ -1,0 +1,15 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const root=new URL('../',import.meta.url);
+let html=await readFile(new URL('sut/index.html',root),'utf8');
+const script=html.match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
+if(!script)throw Error('Template de checkout ausente');
+const apiLine=script.split('\n').find(line=>line.startsWith('async function api('));
+if(!apiLine)throw Error('Adaptador local não encontrado');
+const cloudScript="import {api} from './supabase-client.js';\n"+script.replace(apiLine,'');
+html=html.replace(/<script type="module">[\s\S]*?<\/script>/,'<script type="module" src="./generated-checkout.js"></script>');
+html=html.replace('Ambiente fictício e local.','Ambiente fictício de portfólio.').replace('Os pedidos ficam apenas na memória e desaparecem quando o servidor reinicia.','Pedidos são persistidos no Supabase e vinculados à sua conta. Nenhuma cobrança real.');
+const auth=await readFile(new URL('web/auth-panel.html',root),'utf8');
+html=html.replace('<main>','<main>'+auth).replace('</main>','<section class="panel"><h2>Meus pedidos</h2><button id="refresh-orders">Atualizar meus pedidos</button><p id="history-status" role="status"></p><ul id="order-history"></ul></section></main>');
+await mkdir(new URL('web/',root),{recursive:true});
+await writeFile(new URL('web/index.html',root),html);
+await writeFile(new URL('web/generated-checkout.js',root),cloudScript);

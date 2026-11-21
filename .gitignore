@@ -6,3 +6,10 @@ coverage/
 !.env.example
 *.log
 .DS_Store
+dist/
+.vercel/
+supabase/.temp/
+web/index.html
+web/generated-checkout.js
+web/index.html
+web/generated-checkout.js
