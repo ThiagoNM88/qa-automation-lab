@@ -4,11 +4,13 @@ Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estr
 
 ## Status
 
-**Primeiro incremento local implementado.** Checkout didático em Node.js, interface web e 16 testes de unidade/integração executados com sucesso. Automação de navegador com Playwright e pipeline ainda não foram implementados. Os requisitos são autorais e fictícios.
+**Loja publicada e primeiro teste Robot executado.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 1 teste de interface com Robot Framework e Browser Library. Pipeline e suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
+
+[Abrir a Loja Aurora](https://qa-automation-lab-thiagonicoleti56-3030.vercel.app/)
 
 ## Objetivo
 
-Demonstrar o raciocínio de qualidade por trás da automação: requisito → risco → cenário → teste → evidência. A primeira entrega será construída com Playwright; outras ferramentas serão introduzidas conforme o objetivo do estudo.
+Demonstrar o raciocínio de qualidade por trás da automação: requisito → risco → cenário → teste → evidência. A primeira suíte de navegador usa Robot Framework com Browser Library, que utiliza Playwright internamente. Uma suíte própria com Playwright Test será uma entrega distinta.
 
 ## Documentação
 
@@ -17,12 +19,23 @@ Demonstrar o raciocínio de qualidade por trás da automação: requisito → ri
 - [Cenários iniciais](docs/cenarios.md)
 - [Contrato HTTP e decisões do simulador](docs/contrato-api.md)
 - [Verificação do primeiro incremento](docs/verificacao-incremento-1.md)
+- [Executar e entender o primeiro teste Robot](docs/robot-primeiro-teste.md)
+
+## Executar o primeiro teste Robot
+
+Neste computador, o ambiente já está preparado. No terminal da raiz do projeto:
+
+```powershell
+npm run test:robot
+```
+
+O Chrome abre e executa o cenário de mochila com cupom. O relatório fica em `results/robot/report.html`. Para instalar em outro computador, veja o [passo a passo](docs/robot-primeiro-teste.md). Esse teste acessa a loja publicada e verifica subtotal, desconto, frete e total; não precisa de credenciais e não finaliza pedidos.
 
 ## Executar localmente
 
 ### Versão com login e banco na nuvem
 
-A implementação Supabase/Vercel está em preparação para publicação. Banco e regras de acesso já foram provisionados e verificados; login real, redirecionamentos e execução da interface publicada ainda precisam de validação.
+A versão Supabase/Vercel está publicada. O cadastro e o login foram confirmados manualmente pelo responsável pelo projeto. O teste Robot verifica a jornada pública de carrinho e cupom; fluxos autenticados ainda não têm cobertura automatizada de navegador.
 
 Veja [arquitetura, configuração e limites do e-mail](docs/supabase-vercel.md). Essa versão usa `npm ci` e `npm run build`; a configuração pública é exemplificada em `.env.example`.
 
@@ -48,11 +61,12 @@ sut/
   index.html          # interface do checkout
 tests/
   unit/               # regras e estados isolados
-  integration/        # requisições HTTP ao alvo real
+  integration/        # requisições HTTP ao simulador local
+  robot/              # cenário BDD e palavras-chave da interface publicada
 docs/                 # requisitos, riscos, cenários e contrato
 ```
 
-O alvo liga apenas em loopback. Não foi projetado para exposição pública ou uso em produção. Dados ficam em memória; idempotência não sobrevive a reinícios nem coordena múltiplos processos. A interface ainda precisa de validação em navegador e revisão manual de acessibilidade.
+O servidor Node local liga apenas em loopback e usa dados em memória; sua idempotência não sobrevive a reinícios nem coordena múltiplos processos. A loja publicada usa uma implementação separada com Supabase. Os 16 testes Node não comprovam o funcionamento do login ou do banco na nuvem. A revisão manual de acessibilidade continua pendente.
 
 ## Primeira entrega planejada
 
@@ -66,8 +80,8 @@ Não há gateway financeiro real, API de IA ou serviço pago no escopo desta pri
 
 ## Próximas etapas
 
-1. Revisar o primeiro incremento e explorar a interface local.
-2. Adicionar testes de API e fluxos essenciais de interface com Playwright.
-3. Executar e investigar resultados em navegador; preservar evidências reais.
+1. Revisar o primeiro cenário Robot e acompanhar a execução com navegador visível.
+2. Ampliar a suíte com frete grátis, cupom inválido e limpeza de carrinho.
+3. Adicionar cobertura autenticada com contas exclusivas de teste.
 4. Integrar a execução ao CI e documentar as decisões.
 
