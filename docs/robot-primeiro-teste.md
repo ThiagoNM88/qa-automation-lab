@@ -26,6 +26,14 @@ Para executar sem mostrar a janela:
 npm run test:robot -- --headless
 ```
 
+Para reproduzir o alvo usado pelo GitHub Actions, sem depender da loja publicada:
+
+```powershell
+npm run test:robot -- --headless --local
+```
+
+Esse modo inicia os servidores necessários automaticamente e valida a interface do código local. Não valida Supabase Auth nem a integração na nuvem.
+
 ## O que esses testes comprovam
 
 Uma Mochila Aurora custa R$ 100,00. O cupom AURORA10 concede R$ 10,00 de desconto; o frete custa R$ 10,00. O total esperado é R$ 100,00. Antes do cupom, o teste também verifica o total de R$ 110,00.

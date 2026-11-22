@@ -4,7 +4,7 @@ Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estr
 
 ## Status
 
-**Loja publicada e suítes Robot implementadas.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 25 casos Robot (18 na interface pública e 7 de pagamentos no simulador local). Pipeline e suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
+**Loja publicada e suítes Robot implementadas.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 25 casos Robot (18 na interface pública e 7 de pagamentos no simulador local). A pipeline GitHub Actions foi executada com sucesso e preserva evidências por três dias. Suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
 
 [Abrir a Loja Aurora](https://qa-automation-lab-thiagonicoleti56-3030.vercel.app/)
 
@@ -86,5 +86,5 @@ Não há gateway financeiro real, API de IA ou serviço pago no escopo desta pri
 1. Revisar o primeiro cenário Robot e acompanhar a execução com navegador visível.
 2. Revisar cenários negativos, limites, teclado e pagamentos locais na [matriz de cobertura](docs/cobertura-robot.md).
 3. Adicionar cobertura autenticada com contas exclusivas de teste.
-4. Integrar a execução ao CI e documentar as decisões.
+4. Revisar o workflow e os artefatos da [pipeline já implementada](docs/ci-github-actions.md).
 

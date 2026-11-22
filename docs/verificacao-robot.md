@@ -22,3 +22,9 @@ Um conflito de salvamento no editor removeu `Suite Setup` e `Suite Teardown` do 
 Na execução seguinte, 24 casos passaram e o CT-01 falhou porque contou os produtos antes do carregamento assíncrono do catálogo. A contagem agora aguarda até 20 segundos pela condição esperada, sem pausa fixa. Foi reexecutado somente o caso que falhou: 1 teste, 1 aprovado, 0 falhas. Não foi feita uma nova rodada completa após essa correção.
 
 O relatório original foi preservado em `results/robot-antes-correcao-20261122-49dc7e4a/`; a revalidação está em `results/robot-revalidacao/`. Esses artefatos locais permanecem fora do Git. O relatório de `results/robot/` ainda representa a rodada com 24 aprovados e 1 falha, até a próxima execução completa.
+
+## Execução completa e CI em 22/11/2026
+
+Posteriormente, os 25 casos Robot foram executados com `--headless --local` e passaram, validando o modo usado no CI. O comando `npm run test:ci` também passou com 16 testes e gerou JUnit.
+
+A [primeira execução no GitHub Actions](https://github.com/ThiagoNM88/qa-automation-lab/actions/runs/45027018018) confirmou os mesmos resultados no Ubuntu 24.04: 16 testes Node e 25 Robot aprovados, com upload de ambos os artefatos. Isso valida o workflow no runner remoto, além da execução local. O modo CI usa o simulador do commit e não valida a integração Supabase nem a versão publicada na Vercel.

@@ -15,7 +15,7 @@ São 18 casos de interface pública em `tests/robot/checkout.robot` e 7 casos de
 
 ## Alvos e isolamento
 
-- **Checkout público:** acessa a Vercel e o cálculo do Supabase. Não faz login e não cria pedidos na nuvem.
+- **Checkout público (comando padrão):** acessa a Vercel e o cálculo do Supabase. Não faz login e não cria pedidos na nuvem. Com `--local`, usado no CI, essa suíte acessa o simulador Node da versão testada; não verifica o adaptador Supabase.
 - **Pagamentos:** usa a mesma interface HTML no simulador Node local, com servidor descartável em uma porta livre. O Robot inicia e encerra esse servidor automaticamente; não é preciso rodar `npm start`. O armazenamento é em memória.
 - **Unidade/API Node:** verifica regras diretamente e chamadas HTTP ao simulador local. Inclui concorrência, payload adulterado e conflito de chave que não podem ser provocados pelos controles normais da tela.
 
@@ -59,7 +59,7 @@ Os passos permanecem nos resources. A biblioteca Python cuida apenas do servidor
 
 ## Evidências
 
-Depois de `npm run test:robot`, os resultados ficam em `results/robot/`: `report.html` (resumo), `log.html` (passos e capturas) e `output.xml` (resultado estruturado). Há captura ao final de cada teste, inclusive quando falha. Esses dados são locais, não são enviados ao GitHub e são substituídos nas próximas execuções. Não existe ainda uma pipeline que retenha os artefatos por execução.
+Depois de `npm run test:robot`, os resultados ficam em `results/robot/`: `report.html` (resumo), `log.html` (passos e capturas) e `output.xml` (resultado estruturado). Há captura ao final de cada teste, inclusive quando falha. Esses dados são locais, não são enviados ao GitHub e são substituídos nas próximas execuções. No GitHub Actions, a pipeline executa os 25 casos com `--headless --local`, contra o código do commit, e guarda relatórios e capturas como artefatos por três dias. Consulte [a explicação da esteira](ci-github-actions.md).
 
 Executar pelo botão do RobotCode pode testar apenas o cenário selecionado e usar outra pasta de saída. Para executar a suíte inteira com a configuração descrita aqui, use o comando npm.
 

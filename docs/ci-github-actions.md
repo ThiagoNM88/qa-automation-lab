@@ -14,6 +14,12 @@ git push ou Pull Request para main
 
 O arquivo que descreve essa receita é `.github/workflows/qa.yml`. O computador pessoal não precisa permanecer ligado depois do envio. Esta esteira é CI: verifica código e produz evidências. Ela não faz deploy, não promove versões na Vercel e não migra o Supabase.
 
+## Primeira execução real validada
+
+Em 22/11/2026, a [execução 45027018018](https://github.com/ThiagoNM88/qa-automation-lab/actions/runs/45027018018), referente ao commit `031b8b8e2ea746aa0e63ba3f27b00655f690cd0e`, terminou com sucesso no Ubuntu do GitHub: 16 testes Node e 25 casos Robot aprovados. Os logs confirmam os dois comandos, e os uploads foram concluídos.
+
+Foram gerados os artefatos `node-45027018018-1` (JUnit) e `robot-45027018018-1` (29 arquivos, aproximadamente 4 MB, incluindo relatórios e capturas). A expiração registrada foi 25/11/2026. O link da execução permanece como referência; os arquivos deixam de estar disponíveis após a retenção configurada.
+
 ## Como ler o arquivo YAML
 
 | Bloco | Significado no projeto |
