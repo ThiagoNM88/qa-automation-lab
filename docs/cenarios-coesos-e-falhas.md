@@ -43,7 +43,9 @@ npm run test:robot -- --headless --local --demo-falhas
 
 Esperado: **30 casos, 28 aprovados e 2 falhas intencionais**. O comando termina com código diferente de zero. Isso deve reprovar a etapa na pipeline, sem impedir a tentativa de upload das evidências.
 
-No GitHub, abra o job Robot, localize os dois DEMO nos logs e baixe o artefato `robot-...`. Extraia o ZIP e abra `log.html`. Compare a mensagem da asserção de valor com a mensagem do seletor inexistente. Expanda o teardown para ver a captura correspondente a cada cenário.
+No GitHub, abra a execução e consulte **Summary**: o resumo mostra os totais e as mensagens dos cenários reprovados. O link **Abrir cenários e capturas no navegador** aponta para `evidencias.html`, enviado sem ZIP com a ação oficial `upload-artifact` v7. O HTML incorpora as imagens, os passos e as mensagens extraídos do resultado real do Robot. As falhas aparecem expandidas; os demais cenários podem ser abertos individualmente.
+
+Os artefatos ficam disponíveis por três dias e exigem uma sessão autenticada no GitHub. O pacote `robot-...` continua disponível para quem precisar baixar o `output.xml`, o `log.html` completo e os arquivos originais. A geração do relatório usa `if: always()` e preserva o resultado reprovado dos testes. Para gerar o HTML localmente: `python scripts/gerar_evidencias.py`.
 
 ## Depois do exercício
 
