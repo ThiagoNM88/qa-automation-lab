@@ -11,7 +11,7 @@ Test Teardown       Encerrar navegador de teste
 
 *** Test Cases ***
 CT-09 - Confirmar pedido com aprovação simulada
-    [Tags]    pagamento    local    aprovado    CT-09
+    [Tags]    pagamento    local    aprovado    smoke    CT-09
     Dado que estou na Loja Aurora
     E adiciono uma Mochila Aurora ao carrinho
     Quando confirmo o pedido com pagamento    approved

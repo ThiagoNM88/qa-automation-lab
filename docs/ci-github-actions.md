@@ -8,7 +8,7 @@ git push ou Pull Request para main
   → baixa o código daquele envio
   → instala os programas e dependências
   → executa 16 testes de unidade/API
-  → se passarem, executa 25 cenários Robot
+  → se passarem, executa Robot: 3 smoke em branches/PRs ou 28 na main/manual
   → disponibiliza os resultados e as capturas
 ```
 
@@ -37,7 +37,7 @@ Foram gerados os artefatos `node-45027018018-1` (JUnit) e `robot-45027018018-1` 
 | `permissions` | O token da execução só precisa ler o código |
 | `concurrency` | Um envio mais recente cancela a execução antiga daquela branch |
 
-As ações oficiais estão fixadas por SHA de commit. O comentário `v6` indica a versão consultada; o SHA evita que uma mudança futura da tag altere silenciosamente a ação usada.
+As ações oficiais estão fixadas por SHA de commit. Os comentários de versão indicam a versão consultada; o SHA evita que uma mudança futura da tag altere silenciosamente a ação usada. O HTML sem ZIP usa upload-artifact v7.
 
 ## Quais comandos são executados
 
@@ -49,7 +49,13 @@ npm run test:ci
 
 Executa os mesmos 16 testes de `npm test` e grava `results/node/junit.xml`, além do resultado legível no terminal.
 
-Robot no CI:
+Robot no CI para branches de trabalho e Pull Requests:
+
+```powershell
+npm run test:robot -- --headless --local --smoke
+```
+
+Robot no CI na main e em execuções manuais:
 
 ```powershell
 npm run test:robot -- --headless --local
@@ -67,14 +73,14 @@ O CI local não valida o adaptador Supabase, Auth ou pedidos reais na nuvem. Ess
 2. Selecione a execução **QA Automation CI**.
 3. Abra o job **1 - Unidade e API** ou **2 - Robot Framework**.
 4. Clique no passo desejado para ler os comandos e suas saídas.
-5. Na página de resumo da execução, procure **Artifacts**.
-6. Baixe o pacote `robot-...`, extraia o ZIP e abra `report.html` ou `log.html`.
+5. Na página **Summary**, consulte os totais e o link **Abrir cenários e capturas no navegador**. O HTML incorpora as imagens e abre sem extrair ZIP.
+6. Para os arquivos originais, procure **Artifacts**, baixe o pacote `robot-...`, extraia o ZIP e abra `report.html` ou `log.html`.
 
 O pacote Robot inclui relatórios, XML, capturas e arquivos auxiliares que existirem na pasta daquela execução. O pacote `node-...` inclui o JUnit. Os nomes contêm o ID e a tentativa da execução para distinguir evidências. Esses pacotes são gerados pelo GitHub; não é necessário versionar imagens e relatórios no código.
 
 Se a preparação falhar antes de criar resultados, o passo de upload avisa que não encontrou arquivos. Nesse caso, os logs do passo de preparação são a evidência disponível.
 
-A execução manual (`Run workflow`) depende de o workflow existir na branch padrão. Enquanto este trabalho estiver apenas em `feat/checkout-local`, o envio de código já dispara a esteira; o botão manual pode não aparecer. A branch main ainda precisa receber essas mudanças por revisão/merge.
+A execução manual (`Run workflow`) está disponível porque o workflow já existe na branch padrão. A seleção manual executa a regressão completa, inclusive quando o usuário escolhe uma branch de trabalho.
 
 ## Como decidir a estratégia de testes
 
@@ -96,9 +102,9 @@ Exemplos:
 
 Em uma aplicação grande, costuma ser útil combinar testes rápidos em cada Pull Request, regressão mais ampla em horários programados e smoke após deploy. Seleção por impacto precisa considerar dependências; um arquivo aparentemente pequeno pode afetar várias funcionalidades.
 
-Aqui a suíte ainda é pequena. A decisão inicial é executar os 16 testes Node e todos os 25 casos Robot em cada alteração, sem filtros de área. Não configuramos uma execução noturna nem um disparo após deploy nesta entrega.
+Aqui a estratégia didática evoluiu para 16 testes Node em todos os eventos, 3 smoke Robot em branches/PRs e 28 casos regulares na main ou manualmente. Os 3 testes do gerador de relatórios também rodam no job Robot. Não configuramos uma execução noturna nem um disparo após deploy nesta entrega. Veja a [seleção smoke e seus limites](smoke-robot.md): um PR verde verifica os smoke, enquanto defeitos fora dessa seleção podem aparecer na regressão após o merge.
 
-Uma execução vermelha reprova a esteira. **Isso não impede automaticamente um merge:** para tornar os checks obrigatórios, é preciso configurar as regras da branch, uma decisão separada.
+Uma execução vermelha reprova a esteira. A main possui uma regra ativa, configurada pelo administrador, que exige PR, branch atualizada e aprovação dos checks `1 - Unidade e API` e `2 - Robot Framework`. A configuração de proteção é separada do YAML e seus nomes de checks foram preservados nesta seleção.
 
 ## Ambiente e custos
 

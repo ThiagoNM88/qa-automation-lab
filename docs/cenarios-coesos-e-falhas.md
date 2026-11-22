@@ -21,7 +21,7 @@ Arquivo: `examples/falhas-controladas.robot`. Os exemplos não são carregados p
 1. **DEMO-01:** o frete correto é R$0,00 para subtotal de R$200,00. O teste exige propositalmente R$10,00. A falha deve mostrar a divergência entre encontrado e esperado. É uma expectativa errada do exercício, não um defeito da loja.
 2. **DEMO-02:** o teste tenta clicar em `#botao-inexistente-demonstracao`. A falha deve mostrar o timeout de procura do elemento. A validação funcional nem chega a acontecer.
 
-Durante o exercício na branch `test/cenarios-coesos`, o workflow foi configurado com `--demo-falhas` para produzir uma execução reprovada e estudar o diagnóstico. Após o exercício, essa opção foi retirada da CI: ela agora executa somente os 28 casos regulares. O upload usa `if: always()` para preservar relatórios e capturas mesmo quando um teste real falhar. Não há `continue-on-error` para transformar uma falha em aprovação.
+Durante o exercício na branch `test/cenarios-coesos`, o workflow foi configurado com `--demo-falhas` para produzir uma execução reprovada e estudar o diagnóstico. Após o exercício, essa opção foi retirada da CI. A regressão tem 28 casos regulares; branches e PRs usam a [seleção smoke](smoke-robot.md). O upload usa `if: always()` para preservar relatórios e capturas mesmo quando um teste real falhar. Não há `continue-on-error` para transformar uma falha em aprovação.
 
 Os exemplos continuam disponíveis para reprodução local, fora da suíte regular.
 
