@@ -2,9 +2,13 @@
 
 Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estratégia de testes e automação. Primeiro case: **checkout fictício da Loja Aurora**.
 
+## Demonstração nesta branch
+
+A branch `test/cenarios-coesos` ativa duas falhas intencionais na CI para estudar logs e evidências. A suíte normal tem 28 casos; com `--demo-falhas`, executamos 30 e esperamos 2 falhas. A main permanece com a configuração anterior aprovada. Veja o [guia do exercício](docs/cenarios-coesos-e-falhas.md).
+
 ## Status
 
-**Loja publicada e suítes Robot implementadas.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 25 casos Robot (18 na interface pública e 7 de pagamentos no simulador local). A pipeline GitHub Actions foi executada com sucesso e preserva evidências por três dias. Suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
+**Loja publicada e suítes Robot implementadas.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 28 casos Robot regulares (20 de checkout e 8 de pagamentos no simulador local). A pipeline GitHub Actions foi executada com sucesso e preserva evidências por três dias. Suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
 
 [Abrir a Loja Aurora](https://qa-automation-lab-thiagonicoleti56-3030.vercel.app/)
 

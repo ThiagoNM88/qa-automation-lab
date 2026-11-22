@@ -131,16 +131,13 @@ altero a quantidade da mochila para
 a finalização do pedido deve estar disponível
     Get Element States    css=#checkout    contains    enabled
 
-Rejeitar quantidade e permitir correção
+Rejeitar quantidade inválida
     [Arguments]    ${quantidade}
     que estou na Loja Aurora
     adiciono uma Mochila Aurora ao carrinho
     altero a quantidade da mochila para    ${quantidade}
     devo ver o aviso    A quantidade deve ser inteira, de 1 a 5.
     a finalização do pedido deve ficar indisponível
-    altero a quantidade da mochila para    1
-    os valores da compra devem ser    100,00    0,00    10,00    110,00
-    a finalização do pedido deve estar disponível
 
 removo a mochila do carrinho
     Click    role=button[name="Remover Mochila Aurora"]
