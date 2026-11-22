@@ -1,0 +1,18 @@
+import {readFile,writeFile,mkdir} from 'node:fs/promises';
+const root=new URL('../',import.meta.url);
+let html=await readFile(new URL('sut/index.html',root),'utf8');
+const script=html.match(/<script type="module">([\s\S]*?)<\/script>/)?.[1];
+if(!script)throw Error('Template de checkout ausente');
+const apiLine=script.split('\n').find(line=>line.startsWith('async function api('));
+if(!apiLine)throw Error('Adaptador local não encontrado');
+const cloudScript="import {api} from './supabase-client.js';\n"+script.replace(apiLine,'');
+html=html.replace(/<script type="module">[\s\S]*?<\/script>/,'<script type="module" src="./generated-checkout.js"></script>');
+html=html.replace('Ambiente fictício e local.','Ambiente fictício de portfólio.').replace('Os pedidos ficam apenas na memória e desaparecem quando o servidor reinicia.','Pedidos de estudo vinculados à sua conta. Explore, simule e teste à vontade.');
+const auth=await readFile(new URL('web/auth-panel.html',root),'utf8');
+html=html.replace('<a href="#account-title">Minha conta</a>','<button id="open-account" type="button" aria-haspopup="dialog" aria-controls="account-dialog">Minha conta</button>');
+html=html.replace('</style>','\n#open-account{background:#174d40;color:#fff;border-color:#174d40;padding:10px 16px;white-space:nowrap}#account-dialog{color:#253d38;border:1px solid #dce4dc;border-radius:18px;padding:32px;width:min(560px,calc(100% - 32px));max-height:calc(100dvh - 40px);overflow:auto;box-shadow:0 24px 90px #163f3333}#account-dialog::backdrop{background:#142e286b;backdrop-filter:blur(3px)}#account-dialog .account-panel{display:block;margin:24px 0 0}#account-dialog .auth-fields{grid-template-columns:1fr}#account-dialog label{margin-top:14px}#account-dialog h2{font-size:24px;margin:0 0 12px}#close-account{display:block;margin-left:auto}body:has(#account-dialog[open]){overflow:hidden}@media(max-width:480px){#open-account{font-size:11px;padding:9px 12px}.nav-links{gap:8px}#account-dialog{padding:24px}}\n</style>');
+const history='<section class="history-panel"><h2>Meus pedidos</h2><button id="refresh-orders">Atualizar meus pedidos</button><p id="history-status" role="status"></p><ul id="order-history"></ul></section>';
+html=html.replace('</html>',auth.replace('</dialog>',history+'</dialog>')+'</html>');
+await mkdir(new URL('web/',root),{recursive:true});
+await writeFile(new URL('web/index.html',root),html);
+await writeFile(new URL('web/generated-checkout.js',root),cloudScript);

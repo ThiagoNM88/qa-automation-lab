@@ -26,11 +26,11 @@ Classificação qualitativa proposta por impacto. Não existem dados reais de pr
 ## Distribuição das verificações
 
 - Unidade: regras de quantidade, cálculo em centavos, desconto, frete e arredondamento.
-- API: validação no servidor, estados, idempotência e efeitos persistidos. Playwright request será a primeira ferramenta.
-- Interface: poucos fluxos essenciais com Playwright, locators por papel/rótulo e asserções com espera por condição; sem sleeps fixos.
+- API: validação no servidor, estados, idempotência e efeitos persistidos. Implementação atual com `node:test` e HTTP real ao simulador local.
+- Interface: Robot Framework com Browser Library, locators por papel e ID, asserções com espera por condição e contextos independentes. A configuração com janela usa `slowMo` para demonstração, sem pausas fixas para sincronizar respostas.
 - Exploratórios: mensagens, recuperação e navegação por teclado. Registrar sessão e observações reais quando executada.
 
-Cada teste cria seus dados e deve funcionar sem depender da ordem de execução. O alvo local usará dados fictícios. O contrato e a forma de limpeza ainda serão implementados.
+Cada teste cria seus dados e deve funcionar sem depender da ordem de execução. Os pagamentos são simulados em uma instância Node descartável; checkout e cupons também são testados na loja publicada, sem login. Contrato: [contrato-api.md](contrato-api.md). Alvos, cobertura e lacunas: [cobertura-robot.md](cobertura-robot.md).
 
 ## Critérios
 
