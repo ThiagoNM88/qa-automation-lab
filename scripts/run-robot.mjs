@@ -13,7 +13,7 @@ if(!existsSync(python)){
   console.error('Ambiente Robot ausente. Siga docs/robot-primeiro-teste.md para instalar.');process.exit(2);
 }
 const args=['-m','robot','--outputdir','results/robot','--variable',`HEADLESS:${headless?'True':'False'}`,'--variable',`SLOW_MO:${headless?'0ms':'400ms'}`,'tests/robot'];
-console.log('Robot: abrir loja → adicionar mochila → aplicar cupom → conferir valores.');
+console.log('Robot: validar compra com cupom e limpeza completa do carrinho.');
 console.log('Relatório: results/robot/report.html');
 const child=spawn(python,args,{cwd:root,stdio:'inherit',env:{...process.env,PYTHONIOENCODING:'utf-8'}});
 child.on('error',error=>{console.error(error.message);process.exitCode=1;});

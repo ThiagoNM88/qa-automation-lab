@@ -19,6 +19,13 @@ Esta tabela foi criada no planejamento. A cobertura parcial já executada em uni
 | CT-13 | R-09 | Reutilizar chave com carrinho diferente | Conflito, sem alterar pedido anterior ou iniciar nova tentativa | API |
 | CT-14 | R-10 | Navegar e concluir o fluxo usando teclado | Controles operáveis, foco visível e mensagens relacionadas aos campos | Exploratório + UI complementar |
 
+## Cobertura Robot na loja publicada
+
+- **CT-01:** mochila com cupom; subtotal R$100,00, desconto R$10,00, frete R$10,00 e total R$100,00. Requisitos R-02, R-03, R-05 e R-06.
+- **CT-15:** limpar carrinho com uma mochila e cupom aplicado; nenhum item, contador zero, campo de cupom vazio, desconto removido, todos os valores zerados e finalização desabilitada. Requisitos R-07 e R-11. O estado vazio e o botão de limpeza desabilitado também são verificados. Não cobre limpeza durante confirmação nem a preservação do histórico de pedidos.
+
+Ambos usam um contexto de navegador novo por teste. O CT-15 prepara seus próprios dados, sem depender de o CT-01 ter rodado antes. Comando: `npm run test:robot`. Os resultados completos estão em `results/robot/log.html` e não são versionados.
+
 ## Exemplo detalhado: CT-11
 
 - Pré-condições: alvo disponível, dados limpos e simulador configurado para aprovação; chave inédita `aurora-ct11-001`.

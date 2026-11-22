@@ -47,6 +47,28 @@ o frete deve ser R$ 10,00
 o total deve ser R$ 100,00
     Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    total    100,00
 
+limpo o carrinho
+    Click    css=#clear-cart
+
+o carrinho deve ficar vazio
+    Get Element Count    css=#cart .cart-item    ==    0
+    Get Text    css=#cart-count    ==    0
+    Get Element States    css=#empty    contains    visible
+    Get Element States    css=#clear-cart    contains    disabled
+
+o cupom deve ser removido
+    Get Property    css=#coupon    value    ==    ${EMPTY}
+    Get Text    css=#applied    ==    Nenhum cupom aplicado.
+    Get Element States    css=#remove-coupon    contains    hidden
+
+todos os valores da compra devem ficar zerados
+    FOR    ${campo}    IN    subtotal    discount    shipping    total
+        Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    ${campo}    0,00
+    END
+
+a finalização do pedido deve ficar indisponível
+    Get Element States    css=#checkout    contains    disabled
+
 Conferir valor monetário
     [Arguments]    ${campo}    ${esperado}
     ${texto}=    Get Text    css=#${campo}

@@ -19,6 +19,10 @@ Comprador consulta seu carrinho, aplica um cupom e confirma um pedido com pagame
 | R-09 | Confirmação exige chave de idempotência. Repetir a mesma chave e conteúdo deve retornar o mesmo pedido e não repetir a tentativa de pagamento. Mesma chave com conteúdo diferente deve retornar conflito sem alterar o pedido anterior. |
 | R-10 | A interface deve permitir operar carrinho, cupom e confirmação por teclado, com foco visível, rótulos nos campos e mensagens de erro associadas aos campos relevantes. |
 
+## Limpeza de carrinho (incremento de interface)
+
+**R-11:** Limpar o carrinho remove todos os itens e o cupom aplicado, esvazia o campo de cupom, zera subtotal, desconto, frete, total e contador, mostra o estado vazio e desabilita a finalização. Não exclui pedidos já registrados. Durante uma confirmação em andamento, a limpeza fica indisponível.
+
 ## Dados de referência
 
 Catálogo abaixo implementado no alvo local. Os valores são fictícios e representados em centavos inteiros no servidor.
