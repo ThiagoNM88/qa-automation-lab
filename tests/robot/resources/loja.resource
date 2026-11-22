@@ -26,7 +26,7 @@ Encerrar navegador de teste
 
 que estou na Loja Aurora
     Get Title    ==    Loja Aurora — Essenciais do dia a dia
-    Get Element Count    css=#catalog .product    ==    4
+    Wait Until Keyword Succeeds    20s    200ms    Get Element Count    css=#catalog .product    ==    4
 
 adiciono uma Mochila Aurora ao carrinho
     Click    role=button[name="Adicionar Mochila Aurora"]
