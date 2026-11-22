@@ -9,13 +9,18 @@ const python=join(root,'.venv',process.platform==='win32'?'Scripts':'bin',proces
 const headless=process.argv.includes('--headless');
 const local=process.argv.includes('--local');
 const demo=process.argv.includes('--demo-falhas');
-if(process.argv.slice(2).some(arg=>!['--headless','--local','--demo-falhas'].includes(arg))){
-  console.error('Uso: npm run test:robot -- [--headless] [--local] [--demo-falhas]');process.exit(2);
+const smoke=process.argv.includes('--smoke');
+if(process.argv.slice(2).some(arg=>!['--headless','--local','--demo-falhas','--smoke'].includes(arg)) || (smoke && demo)){
+  console.error('Uso: npm run test:robot -- [--headless] [--local] [--demo-falhas | --smoke]');process.exit(2);
 }
 if(!existsSync(python)){
   console.error('Ambiente Robot ausente. Siga docs/robot-primeiro-teste.md para instalar.');process.exit(2);
 }
 const args=['-m','robot','--outputdir','results/robot','--variable',`HEADLESS:${headless?'True':'False'}`,'--variable',`SLOW_MO:${headless?'0ms':'400ms'}`];
+if(smoke){
+  args.push('--include','smoke');
+  console.log('Seleção smoke: somente cenários com a tag smoke.');
+}
 let target;
 try{
   if(local){

@@ -4,7 +4,7 @@ Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estr
 
 ## Exercício de diagnóstico concluído
 
-A CI executa os 28 cenários Robot regulares, sem falhas intencionais. Os dois exemplos didáticos continuam disponíveis para execução local com `--demo-falhas`: nesse modo, executamos 30 casos e esperamos 2 falhas. Veja o [guia do exercício](docs/cenarios-coesos-e-falhas.md).
+A CI executa três cenários smoke nas branches de trabalho e nos PRs; na main e em execuções manuais, executa os 28 cenários regulares. Veja a [seleção e seus limites](docs/smoke-robot.md). Os dois exemplos didáticos continuam disponíveis para execução local com `--demo-falhas`: nesse modo, executamos 30 casos e esperamos 2 falhas. Veja o [guia do exercício](docs/cenarios-coesos-e-falhas.md).
 
 ## Status
 

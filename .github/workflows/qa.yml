@@ -52,6 +52,9 @@ jobs:
     timeout-minutes: 20
     env:
       PYTHONIOENCODING: utf-8
+      # QA define a seleção; a pipeline aplica a regra pelo evento e pela branch.
+      # PR ou push em branch de trabalho: smoke. Push na main ou execução manual: regressão.
+      ROBOT_SUITE: ${{ (github.event_name == 'pull_request' || (github.event_name == 'push' && github.ref != 'refs/heads/main')) && 'smoke' || 'regressao' }}
     steps:
       - name: Baixar o código desta versão
         uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
@@ -81,8 +84,16 @@ jobs:
           .venv/bin/python --version
           google-chrome --version
       - name: Executar os cenários Robot sem janela
-        # Suíte regular. As falhas didáticas ficam disponíveis via --demo-falhas localmente.
-        run: npm run test:robot -- --headless --local
+        # O nome do job permanece igual ao check obrigatório da proteção da main.
+        # Uma falha em qualquer seleção reprova o job normalmente.
+        run: |
+          if [ "$ROBOT_SUITE" = "smoke" ]; then
+            echo "Executando smoke: cenários essenciais selecionados pelo QA."
+            npm run test:robot -- --headless --local --smoke
+          else
+            echo "Executando regressão: todos os cenários regulares."
+            npm run test:robot -- --headless --local
+          fi
       - name: Validar e gerar o resumo visual
         if: always()
         run: |
