@@ -1,6 +1,6 @@
 # Cenários iniciais e rastreabilidade
 
-Esta tabela foi criada no planejamento. A cobertura parcial já executada em unidade e integração está em [verificacao-incremento-1.md](verificacao-incremento-1.md). Os fluxos completos de interface continuam pendentes; não considerar todos os cenários aprovados. Contrato e estados estão em [contrato-api.md](contrato-api.md).
+Esta tabela preserva o planejamento inicial. A implementação atual e suas limitações estão na [matriz de cobertura Robot e Node](cobertura-robot.md). A evidência histórica do primeiro incremento está em [verificacao-incremento-1.md](verificacao-incremento-1.md). Contrato e estados estão em [contrato-api.md](contrato-api.md).
 
 | ID | Requisitos | Cenário e dados | Resultado esperado | Nível inicial |
 | --- | --- | --- | --- | --- |
@@ -19,12 +19,11 @@ Esta tabela foi criada no planejamento. A cobertura parcial já executada em uni
 | CT-13 | R-09 | Reutilizar chave com carrinho diferente | Conflito, sem alterar pedido anterior ou iniciar nova tentativa | API |
 | CT-14 | R-10 | Navegar e concluir o fluxo usando teclado | Controles operáveis, foco visível e mensagens relacionadas aos campos | Exploratório + UI complementar |
 
-## Cobertura Robot na loja publicada
+## Evolução da cobertura
 
-- **CT-01:** mochila com cupom; subtotal R$100,00, desconto R$10,00, frete R$10,00 e total R$100,00. Requisitos R-02, R-03, R-05 e R-06.
-- **CT-15:** limpar carrinho com uma mochila e cupom aplicado; nenhum item, contador zero, campo de cupom vazio, desconto removido, todos os valores zerados e finalização desabilitada. Requisitos R-07 e R-11. O estado vazio e o botão de limpeza desabilitado também são verificados. Não cobre limpeza durante confirmação nem a preservação do histórico de pedidos.
+A suíte Robot contém 18 casos públicos de checkout e 7 casos no simulador local, incluindo CT-15 (limpar carrinho) e CT-16 (cupom inválido). Cada caso tem dados e contexto independentes. Os 16 testes Node complementam a cobertura com regras, API, payload adulterado, concorrência e conflito de chave.
 
-Ambos usam um contexto de navegador novo por teste. O CT-15 prepara seus próprios dados, sem depender de o CT-01 ter rodado antes. Comando: `npm run test:robot`. Os resultados completos estão em `results/robot/log.html` e não são versionados.
+A [matriz de cobertura](cobertura-robot.md) relaciona todos os IDs às verificações executáveis e explicita o que não é validado na nuvem. Comandos: `npm test` e `npm run test:robot`. Resultados Robot: `results/robot/log.html`.
 
 ## Exemplo detalhado: CT-11
 
@@ -33,5 +32,5 @@ Ambos usam um contexto de navegador novo por teste. O CT-15 prepara seus própri
 - Passos: confirmar o carrinho com a chave; guardar identificador e resposta; repetir o mesmo conteúdo e chave; consultar o pedido e as tentativas registradas.
 - Esperado: ambas as respostas referem-se ao mesmo pedido; uma tentativa de pagamento; total de 11000 centavos; nenhum pedido adicional.
 - Evidências futuras: versão do alvo, requisições/respostas sanitizadas, identificador de correlação e estado final.
-- Status: verificações de estado e HTTP implementadas, com evidência no relatório do incremento. Reenvio pela interface ainda pendente de execução em navegador.
+- Status: verificações de estado e HTTP implementadas, com evidência no relatório do incremento. Reenvio pela interface implementado em `tests/robot/pagamentos.robot`, no simulador local.
 

@@ -7,16 +7,22 @@ ${HEADLESS}    ${False}
 ${SLOW_MO}     400ms
 
 *** Keywords ***
-Abrir navegador de teste
+Abrir navegador da suíte
     New Browser    chromium    channel=chrome    headless=${HEADLESS}    slowMo=${SLOW_MO}
+
+Encerrar navegador da suíte
+    Close Browser
+
+Abrir navegador de teste
+    [Arguments]    ${url}=${BASE_URL}
     New Context    locale=pt-BR    viewport={'width': 1366, 'height': 900}
     Set Browser Timeout    15s
-    New Page    ${BASE_URL}
+    New Page    ${url}
 
 Encerrar navegador de teste
     # A captura acontece antes de fechar o navegador, inclusive quando o teste falha.
     Run Keyword And Ignore Error    Take Screenshot    filename=checkout-{index}
-    Close Browser
+    Close Context
 
 que estou na Loja Aurora
     Get Title    ==    Loja Aurora — Essenciais do dia a dia
@@ -68,6 +74,94 @@ todos os valores da compra devem ficar zerados
 
 a finalização do pedido deve ficar indisponível
     Get Element States    css=#checkout    contains    disabled
+
+abro o carrinho
+    Click    css=#open-cart
+    Get Element States    css=#cart-dialog    contains    visible
+
+adiciono o produto ao carrinho
+    [Arguments]    ${produto}
+    Click    role=button[name="Adicionar ${produto}"]
+    abro o carrinho
+    Get Text    css=#cart    contains    ${produto}
+
+monto um carrinho de R$ 199,99
+    Click    role=button[name="Adicionar Caderno Aurora"]
+    Click    role=button[name="Adicionar Garrafa Aurora"]
+    Click    role=button[name="Adicionar Mochila Aurora"]
+    abro o carrinho
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    subtotal    199,99
+
+monto um carrinho de R$ 99,99
+    Click    role=button[name="Adicionar Caderno Aurora"]
+    Click    role=button[name="Adicionar Garrafa Aurora"]
+    abro o carrinho
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    subtotal    99,99
+
+tento aplicar o cupom
+    [Arguments]    ${codigo}
+    Fill Text    css=#coupon    ${codigo}
+    Click    css=#coupon-form button
+
+devo ver o aviso
+    [Arguments]    ${mensagem}
+    Get Text    css=#error    contains    ${mensagem}
+
+nenhum cupom deve estar aplicado
+    Get Text    css=#applied    ==    Nenhum cupom aplicado.
+    Get Element States    css=#remove-coupon    contains    hidden
+
+o cupom válido deve estar aplicado
+    Get Text    css=#applied    ==    Cupom aplicado: AURORA10
+
+os valores da compra devem ser
+    [Arguments]    ${subtotal}    ${desconto}    ${frete}    ${total}
+    # Aguarda o recálculo terminar antes de comparar valores que podem estar antigos.
+    Get Element States    css=#checkout    contains    enabled
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    subtotal    ${subtotal}
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    discount    ${desconto}
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    shipping    ${frete}
+    Wait Until Keyword Succeeds    15s    200ms    Conferir valor monetário    total    ${total}
+
+altero a quantidade da mochila para
+    [Arguments]    ${quantidade}
+    Fill Text    css=#quantity-AUR-003    ${quantidade}
+    Press Keys    css=#quantity-AUR-003    Tab
+
+a finalização do pedido deve estar disponível
+    Get Element States    css=#checkout    contains    enabled
+
+Rejeitar quantidade e permitir correção
+    [Arguments]    ${quantidade}
+    que estou na Loja Aurora
+    adiciono uma Mochila Aurora ao carrinho
+    altero a quantidade da mochila para    ${quantidade}
+    devo ver o aviso    A quantidade deve ser inteira, de 1 a 5.
+    a finalização do pedido deve ficar indisponível
+    altero a quantidade da mochila para    1
+    os valores da compra devem ser    100,00    0,00    10,00    110,00
+    a finalização do pedido deve estar disponível
+
+removo a mochila do carrinho
+    Click    role=button[name="Remover Mochila Aurora"]
+
+removo o cupom aplicado
+    Click    css=#remove-coupon
+
+adiciono a mochila e aplico o cupom pelo teclado
+    Press Keys    role=button[name="Adicionar Mochila Aurora"]    Enter
+    Get Text    css=#cart-count    ==    1
+    Press Keys    css=#open-cart    Enter
+    Get Element States    css=#cart-dialog    contains    visible
+    Type Text    css=#coupon    AURORA10
+    Press Keys    css=#coupon    Tab
+    Get Property    css=:focus    textContent    ==    Aplicar
+    Press Keys    css=:focus    Enter
+    o cupom válido deve estar aplicado
+    Press Keys    css=#coupon    Escape
+    Get Element States    css=#cart-dialog    contains    hidden
+    Press Keys    css=#open-cart    Enter
+    Get Element States    css=#cart-dialog    contains    visible
 
 Conferir valor monetário
     [Arguments]    ${campo}    ${esperado}

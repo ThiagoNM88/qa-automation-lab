@@ -8,14 +8,14 @@ No terminal do VS Code, na raiz `qa-automation-lab`, execute:
 npm run test:robot
 ```
 
-O ambiente Python deste computador já foi configurado. Esse comando abre uma janela independente do Chrome, executa os cenários e fecha o navegador ao terminar. Não precisa iniciar um servidor local nem fazer login na loja.
+O ambiente Python deste computador já foi configurado. Esse comando abre uma janela independente do Chrome, executa os cenários e fecha o navegador ao terminar. Não precisa iniciar um servidor local manualmente nem fazer login na loja. O teste de pagamentos inicia seu próprio simulador.
 
-O teste usa a **versão publicada** da Loja Aurora. Alterar um arquivo local não muda automaticamente a página testada. É necessário acesso à internet; a disponibilidade da Vercel e do Supabase pode afetar o resultado.
+A suíte de checkout usa a **versão publicada** da Loja Aurora; a suíte de pagamentos usa o simulador Node local. Alterar um arquivo local não muda automaticamente a página testada. É necessário acesso à internet; a disponibilidade da Vercel e do Supabase pode afetar o resultado.
 
 Resultado esperado:
 
 ```text
-2 tests, 2 passed, 0 failed
+25 tests, 25 passed, 0 failed
 ```
 
 Depois, abra `results/robot/report.html` no navegador para ver o resumo. `results/robot/log.html` mostra cada passo, seus argumentos e a captura de tela. Esses arquivos são gerados, ficam fora do Git e são substituídos a cada execução.
@@ -32,7 +32,7 @@ Uma Mochila Aurora custa R$ 100,00. O cupom AURORA10 concede R$ 10,00 de descont
 
 Os cenários estão em `tests/robot/checkout.robot`, escrito com Dado, Quando e Então. Os passos executáveis estão em `tests/robot/resources/loja.resource`: abrir a página, clicar, preencher o cupom e conferir os valores. Não há pausas fixas para aguardar respostas: as verificações aguardam o resultado esperado até um limite de tempo. A execução com janela usa movimentos mais lentos apenas para facilitar acompanhar os cliques.
 
-São testes funcionais de interface integrados ao cálculo real na nuvem. O segundo cenário, CT-15, reutiliza os passos de adicionar mochila e aplicar cupom, limpa o carrinho e confere itens, contador, cupom, valores e bloqueio da finalização. Cada cenário começa em um contexto independente. Ainda **não** cobrem login, finalização de pedidos, timeout, recusa ou acessibilidade. Não usa a sessão pessoal do Chrome, não envia senha e não cria pedidos.
+A suíte foi ampliada para 25 casos, incluindo negativos, fronteiras, limpeza, teclado e pagamentos locais simulados. Cada caso começa em um contexto independente e não usa sua sessão pessoal do Chrome. Login e finalização autenticada no Supabase continuam fora da cobertura. Consulte [a matriz de cenários, alvos e limites](cobertura-robot.md) antes de interpretar os resultados.
 
 Os 16 testes Node continuam separados, executados por `npm test`. O Robot não substitui essa cobertura.
 

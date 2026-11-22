@@ -4,7 +4,7 @@ Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estr
 
 ## Status
 
-**Loja publicada e primeiro teste Robot executado.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 2 testes de interface com Robot Framework e Browser Library. Pipeline e suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
+**Loja publicada e suítes Robot implementadas.** A Loja Aurora tem catálogo, carrinho, cupom e acesso à conta no cabeçalho. A versão na nuvem usa Supabase Auth e banco com controle de acesso por usuário. Existem 16 testes Node de unidade/componentes e integração HTTP no simulador local, além de 25 casos Robot (18 na interface pública e 7 de pagamentos no simulador local). Pipeline e suítes independentes de Playwright, Cypress e Selenium ainda não foram implementadas. Os requisitos são autorais e fictícios.
 
 [Abrir a Loja Aurora](https://qa-automation-lab-thiagonicoleti56-3030.vercel.app/)
 
@@ -20,8 +20,10 @@ Demonstrar o raciocínio de qualidade por trás da automação: requisito → ri
 - [Contrato HTTP e decisões do simulador](docs/contrato-api.md)
 - [Verificação do primeiro incremento](docs/verificacao-incremento-1.md)
 - [Executar e entender o primeiro teste Robot](docs/robot-primeiro-teste.md)
+- [Matriz de cobertura e limites da suíte](docs/cobertura-robot.md)
+- [Resultado da verificação das suítes](docs/verificacao-robot.md)
 
-## Executar o primeiro teste Robot
+## Executar as suítes Robot
 
 Neste computador, o ambiente já está preparado. No terminal da raiz do projeto:
 
@@ -29,7 +31,7 @@ Neste computador, o ambiente já está preparado. No terminal da raiz do projeto
 npm run test:robot
 ```
 
-O Chrome abre e executa os cenários de mochila com cupom e limpeza do carrinho. O relatório fica em `results/robot/report.html`. Para instalar em outro computador, veja o [passo a passo](docs/robot-primeiro-teste.md). Esse teste acessa a loja publicada e verifica subtotal, desconto, frete e total; não precisa de credenciais e não finaliza pedidos.
+O Chrome executa as suítes de checkout público e pagamentos simulados locais. Cada cenário tem um contexto independente. O relatório fica em `results/robot/report.html`. Para instalar em outro computador, veja o [passo a passo](docs/robot-primeiro-teste.md). Os testes públicos acessam a loja publicada. Os de pagamento iniciam um simulador local automaticamente, sem contas nem pedidos na nuvem. Veja a [matriz de cobertura e limites](docs/cobertura-robot.md).
 
 ## Executar localmente
 
@@ -81,7 +83,7 @@ Não há gateway financeiro real, API de IA ou serviço pago no escopo desta pri
 ## Próximas etapas
 
 1. Revisar o primeiro cenário Robot e acompanhar a execução com navegador visível.
-2. Ampliar a suíte com frete grátis e cupom inválido.
+2. Revisar cenários negativos, limites, teclado e pagamentos locais na [matriz de cobertura](docs/cobertura-robot.md).
 3. Adicionar cobertura autenticada com contas exclusivas de teste.
 4. Integrar a execução ao CI e documentar as decisões.
 
