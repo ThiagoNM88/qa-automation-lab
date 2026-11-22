@@ -81,7 +81,27 @@ jobs:
           .venv/bin/python --version
           google-chrome --version
       - name: Executar os cenários Robot sem janela
+        # Suíte regular. As falhas didáticas ficam disponíveis via --demo-falhas localmente.
         run: npm run test:robot -- --headless --local
+      - name: Validar e gerar o resumo visual
+        if: always()
+        run: |
+          python -m unittest discover -s tests/reporting -p 'test_*.py'
+          python scripts/gerar_evidencias.py
+      - name: Disponibilizar relatório HTML sem ZIP
+        id: evidencia
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          path: results/visual/evidencias.html
+          archive: false
+          retention-days: 3
+          if-no-files-found: warn
+      - name: Mostrar link das evidências no resumo da execução
+        if: always()
+        env:
+          EVIDENCIAS_URL: ${{ steps.evidencia.outputs.artifact-url }}
+        run: python scripts/gerar_evidencias.py --link
       - name: Guardar relatórios e capturas mesmo se o teste falhar
         if: always()
         uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6

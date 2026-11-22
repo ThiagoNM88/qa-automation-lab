@@ -27,15 +27,24 @@ CT-09 - Recusar pagamento sem confirmar o pedido
     E deve haver uma única tentativa de pagamento
     E devo ver o resultado da compra    Pagamento recusado.
 
-CT-10 - Consultar e reenviar timeout sem criar segunda tentativa
-    [Tags]    pagamento    local    timeout    idempotencia    CT-10
+CT-10 - Consultar timeout preserva a tentativa pendente
+    [Tags]    pagamento    local    timeout    consulta    CT-10
     Dado que estou na Loja Aurora
     E adiciono uma Mochila Aurora ao carrinho
-    Quando confirmo o pedido com pagamento    timeout
-    Então a tentativa deve ter o status    Resultado desconhecido
+    E confirmo o pedido com pagamento    timeout
+    E a tentativa deve ter o status    Resultado desconhecido
     ${antes}=    Get Text    css=#order-result
     Quando consulto a tentativa
     Então o resultado completo deve continuar igual    ${antes}
+    E deve haver uma única tentativa de pagamento
+
+CT-10 - Reenviar timeout não cria segunda tentativa
+    [Tags]    pagamento    local    timeout    idempotencia    CT-10
+    Dado que estou na Loja Aurora
+    E adiciono uma Mochila Aurora ao carrinho
+    E confirmo o pedido com pagamento    timeout
+    E a tentativa deve ter o status    Resultado desconhecido
+    ${antes}=    Get Text    css=#order-result
     Quando confirmo novamente sem alterar o carrinho
     Então o resultado completo deve continuar igual    ${antes}
     E deve haver uma única tentativa de pagamento

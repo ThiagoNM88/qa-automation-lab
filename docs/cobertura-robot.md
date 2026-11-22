@@ -2,6 +2,8 @@
 
 A suíte cobre os cenários funcionais do planejamento nas camadas indicadas abaixo. Isso não significa que todos os comportamentos possíveis da aplicação foram testados. Os requisitos são fictícios; não há cobrança real.
 
+Nesta branch há também um [exercício de falhas controladas](cenarios-coesos-e-falhas.md): os 28 casos regulares são complementados por dois exemplos opcionais. A pipeline desta branch ativa os exemplos e deve terminar reprovada com apenas as duas falhas intencionais. A configuração da main permanece inalterada.
+
 ## Como executar
 
 ```powershell
@@ -11,7 +13,7 @@ npm run test:robot
 
 O primeiro comando executa 16 testes Node (unidade/componentes e integração HTTP). O segundo executa as suítes Robot com Chrome visível. Para executar Robot sem janela, acrescente `-- --headless`.
 
-São 18 casos de interface pública em `tests/robot/checkout.robot` e 7 casos de pagamento no simulador local em `tests/robot/pagamentos.robot`. Há mais casos que IDs porque um cenário do planejamento pode precisar de várias variações de dados.
+São 20 casos de interface pública em `tests/robot/checkout.robot` e 8 casos de pagamento no simulador local em `tests/robot/pagamentos.robot`. Há mais casos que IDs porque um cenário do planejamento pode precisar de várias variações de dados.
 
 ## Alvos e isolamento
 
@@ -59,7 +61,7 @@ Os passos permanecem nos resources. A biblioteca Python cuida apenas do servidor
 
 ## Evidências
 
-Depois de `npm run test:robot`, os resultados ficam em `results/robot/`: `report.html` (resumo), `log.html` (passos e capturas) e `output.xml` (resultado estruturado). Há captura ao final de cada teste, inclusive quando falha. Esses dados são locais, não são enviados ao GitHub e são substituídos nas próximas execuções. No GitHub Actions, a pipeline executa os 25 casos com `--headless --local`, contra o código do commit, e guarda relatórios e capturas como artefatos por três dias. Consulte [a explicação da esteira](ci-github-actions.md).
+Depois de `npm run test:robot`, os resultados ficam em `results/robot/`: `report.html` (resumo), `log.html` (passos e capturas) e `output.xml` (resultado estruturado). Há captura ao final de cada teste, inclusive quando falha. Esses dados são locais, não são enviados ao GitHub e são substituídos nas próximas execuções. No GitHub Actions, a pipeline executa os 28 casos regulares com `--headless --local`, contra o código do commit, e guarda relatórios e capturas como artefatos por três dias. Consulte [a explicação da esteira](ci-github-actions.md).
 
 Executar pelo botão do RobotCode pode testar apenas o cenário selecionado e usar outra pasta de saída. Para executar a suíte inteira com a configuração descrita aqui, use o comando npm.
 

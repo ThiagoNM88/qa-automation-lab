@@ -15,7 +15,7 @@ A suíte de checkout usa a **versão publicada** da Loja Aurora; a suíte de pag
 Resultado esperado:
 
 ```text
-25 tests, 25 passed, 0 failed
+28 tests, 28 passed, 0 failed
 ```
 
 Depois, abra `results/robot/report.html` no navegador para ver o resumo. `results/robot/log.html` mostra cada passo, seus argumentos e a captura de tela. Esses arquivos são gerados, ficam fora do Git e são substituídos a cada execução.
@@ -40,7 +40,7 @@ Uma Mochila Aurora custa R$ 100,00. O cupom AURORA10 concede R$ 10,00 de descont
 
 Os cenários estão em `tests/robot/checkout.robot`, escrito com Dado, Quando e Então. Os passos executáveis estão em `tests/robot/resources/loja.resource`: abrir a página, clicar, preencher o cupom e conferir os valores. Não há pausas fixas para aguardar respostas: as verificações aguardam o resultado esperado até um limite de tempo. A execução com janela usa movimentos mais lentos apenas para facilitar acompanhar os cliques.
 
-A suíte foi ampliada para 25 casos, incluindo negativos, fronteiras, limpeza, teclado e pagamentos locais simulados. Cada caso começa em um contexto independente e não usa sua sessão pessoal do Chrome. Login e finalização autenticada no Supabase continuam fora da cobertura. Consulte [a matriz de cenários, alvos e limites](cobertura-robot.md) antes de interpretar os resultados.
+A suíte foi revisada para 28 casos regulares, incluindo negativos, fronteiras, limpeza, teclado e pagamentos locais simulados. Cada caso começa em um contexto independente e não usa sua sessão pessoal do Chrome. Login e finalização autenticada no Supabase continuam fora da cobertura. Consulte [a matriz de cenários, alvos e limites](cobertura-robot.md) antes de interpretar os resultados.
 
 Os 16 testes Node continuam separados, executados por `npm test`. O Robot não substitui essa cobertura.
 

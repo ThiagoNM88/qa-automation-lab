@@ -21,7 +21,7 @@ Esta tabela preserva o planejamento inicial. A implementação atual e suas limi
 
 ## Evolução da cobertura
 
-A suíte Robot contém 18 casos públicos de checkout e 7 casos no simulador local, incluindo CT-15 (limpar carrinho) e CT-16 (cupom inválido). Cada caso tem dados e contexto independentes. Os 16 testes Node complementam a cobertura com regras, API, payload adulterado, concorrência e conflito de chave.
+A suíte Robot contém 20 casos públicos de checkout e 8 casos no simulador local, incluindo CT-15 (limpar carrinho) e CT-16 (cupom inválido). Cada caso tem dados e contexto independentes. Os 16 testes Node complementam a cobertura com regras, API, payload adulterado, concorrência e conflito de chave.
 
 A [matriz de cobertura](cobertura-robot.md) relaciona todos os IDs às verificações executáveis e explicita o que não é validado na nuvem. Comandos: `npm test` e `npm run test:robot`. Resultados Robot: `results/robot/log.html`.
 

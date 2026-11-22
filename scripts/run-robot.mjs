@@ -8,8 +8,9 @@ const root=fileURLToPath(new URL('../',import.meta.url));
 const python=join(root,'.venv',process.platform==='win32'?'Scripts':'bin',process.platform==='win32'?'python.exe':'python');
 const headless=process.argv.includes('--headless');
 const local=process.argv.includes('--local');
-if(process.argv.slice(2).some(arg=>!['--headless','--local'].includes(arg))){
-  console.error('Uso: npm run test:robot -- [--headless] [--local]');process.exit(2);
+const demo=process.argv.includes('--demo-falhas');
+if(process.argv.slice(2).some(arg=>!['--headless','--local','--demo-falhas'].includes(arg))){
+  console.error('Uso: npm run test:robot -- [--headless] [--local] [--demo-falhas]');process.exit(2);
 }
 if(!existsSync(python)){
   console.error('Ambiente Robot ausente. Siga docs/robot-primeiro-teste.md para instalar.');process.exit(2);
@@ -27,6 +28,10 @@ try{
     console.log(`Checkout: simulador da versão local em ${url}`);
   }else console.log('Checkout: loja publicada. Pagamentos: simulador local descartável.');
   args.push('tests/robot');
+  if(demo){
+    args.push('examples/falhas-controladas.robot');
+    console.log('DEMONSTRAÇÃO: duas falhas intencionais serão executadas; o resultado esperado é reprovação.');
+  }
   console.log('Relatório: results/robot/report.html');
   const child=spawn(python,args,{cwd:root,stdio:'inherit',env:{...process.env,PYTHONIOENCODING:'utf-8'}});
   process.once('SIGINT',()=>child.kill('SIGINT'));
