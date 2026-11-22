@@ -81,8 +81,8 @@ jobs:
           .venv/bin/python --version
           google-chrome --version
       - name: Executar os cenários Robot sem janela
-        # EXERCÍCIO NESTA BRANCH: remover --demo-falhas após estudar a execução vermelha.
-        run: npm run test:robot -- --headless --local --demo-falhas
+        # Suíte regular. As falhas didáticas ficam disponíveis via --demo-falhas localmente.
+        run: npm run test:robot -- --headless --local
       - name: Validar e gerar o resumo visual
         if: always()
         run: |

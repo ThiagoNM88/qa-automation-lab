@@ -2,9 +2,9 @@
 
 Laboratório de Engenharia de Qualidade com requisitos, análise de riscos, estratégia de testes e automação. Primeiro case: **checkout fictício da Loja Aurora**.
 
-## Demonstração nesta branch
+## Exercício de diagnóstico concluído
 
-A branch `test/cenarios-coesos` ativa duas falhas intencionais na CI para estudar logs e evidências. A suíte normal tem 28 casos; com `--demo-falhas`, executamos 30 e esperamos 2 falhas. A main permanece com a configuração anterior aprovada. Veja o [guia do exercício](docs/cenarios-coesos-e-falhas.md).
+A CI executa os 28 cenários Robot regulares, sem falhas intencionais. Os dois exemplos didáticos continuam disponíveis para execução local com `--demo-falhas`: nesse modo, executamos 30 casos e esperamos 2 falhas. Veja o [guia do exercício](docs/cenarios-coesos-e-falhas.md).
 
 ## Status
 

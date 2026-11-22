@@ -21,9 +21,9 @@ Arquivo: `examples/falhas-controladas.robot`. Os exemplos não são carregados p
 1. **DEMO-01:** o frete correto é R$0,00 para subtotal de R$200,00. O teste exige propositalmente R$10,00. A falha deve mostrar a divergência entre encontrado e esperado. É uma expectativa errada do exercício, não um defeito da loja.
 2. **DEMO-02:** o teste tenta clicar em `#botao-inexistente-demonstracao`. A falha deve mostrar o timeout de procura do elemento. A validação funcional nem chega a acontecer.
 
-Na branch `test/cenarios-coesos`, o workflow foi configurado intencionalmente com `--demo-falhas`. Portanto, a primeira etapa de unidade/API deve passar; o job Robot e o workflow devem reprovar. O upload usa `if: always()` e deve preservar relatórios e capturas mesmo assim. Não há `continue-on-error` para transformar a falha em aprovação.
+Durante o exercício na branch `test/cenarios-coesos`, o workflow foi configurado com `--demo-falhas` para produzir uma execução reprovada e estudar o diagnóstico. Após o exercício, essa opção foi retirada da CI: ela agora executa somente os 28 casos regulares. O upload usa `if: always()` para preservar relatórios e capturas mesmo quando um teste real falhar. Não há `continue-on-error` para transformar uma falha em aprovação.
 
-Essa configuração não foi incorporada à main. A branch principal mantém a configuração aprovada anterior.
+Os exemplos continuam disponíveis para reprodução local, fora da suíte regular.
 
 ## Comandos e resultados esperados
 
@@ -35,7 +35,7 @@ npm run test:robot -- --headless --local
 
 Esperado: **28 casos aprovados, nenhuma falha**.
 
-Exercício de falhas, igual ao workflow desta branch:
+Exercício opcional de falhas, executado localmente:
 
 ```powershell
 npm run test:robot -- --headless --local --demo-falhas
@@ -49,4 +49,4 @@ Os artefatos ficam disponíveis por três dias e exigem uma sessão autenticada 
 
 ## Depois do exercício
 
-Para voltar a uma pipeline verde, remova apenas `--demo-falhas` da linha de execução em `.github/workflows/qa.yml` e envie o novo commit. Os exemplos podem permanecer no repositório para execução manual; o comando normal não os inclui. Antes de integrar esta revisão à main, desative a demonstração e confirme a execução verde.
+A opção `--demo-falhas` foi removida da linha de execução em `.github/workflows/qa.yml`. Os exemplos permanecem no repositório para execução manual; o comando normal não os inclui. Antes de integrar esta revisão à main, confirme a aprovação da CI e revise o Pull Request. A proteção da main é uma configuração separada de administração do repositório.
