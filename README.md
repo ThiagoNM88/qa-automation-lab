@@ -22,6 +22,7 @@ Demonstrar o raciocínio de qualidade por trás da automação: requisito → ri
 - [Executar e entender o primeiro teste Robot](docs/robot-primeiro-teste.md)
 - [Matriz de cobertura e limites da suíte](docs/cobertura-robot.md)
 - [Resultado da verificação das suítes](docs/verificacao-robot.md)
+- [Entender e acompanhar a pipeline no GitHub Actions](docs/ci-github-actions.md)
 
 ## Executar as suítes Robot
 

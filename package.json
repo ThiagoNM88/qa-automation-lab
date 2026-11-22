@@ -10,6 +10,7 @@
     "build": "node scripts/prepare-web.mjs && vite build --config vite.config.mjs",
     "preview": "vite preview --config vite.config.mjs --host 127.0.0.1",
     "test": "node --test tests/unit/*.test.mjs tests/integration/*.test.mjs",
+    "test:ci": "node scripts/run-node-ci.mjs",
     "test:robot": "node scripts/run-robot.mjs"
   },
   "dependencies": { "@supabase/supabase-js": "2.119.2" },

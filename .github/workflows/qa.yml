@@ -1,0 +1,92 @@
+name: QA Automation CI
+
+# Eventos que iniciam uma execução. Isto ainda não realiza deploy.
+on:
+  push:
+    branches: ['**']
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+# O código testado só precisa ler o repositório.
+permissions:
+  contents: read
+
+# Uma alteração mais recente substitui uma execução antiga da mesma branch.
+concurrency:
+  group: qa-${{ github.head_ref || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  unidade-api:
+    name: 1 - Unidade e API
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Baixar o código desta versão
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Preparar Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Instalar dependências do projeto
+        run: npm ci
+      - name: Executar testes de unidade e API
+        run: npm run test:ci
+      - name: Guardar relatório mesmo se o teste falhar
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: node-${{ github.run_id }}-${{ github.run_attempt }}
+          path: results/node/
+          retention-days: 3
+          if-no-files-found: warn
+
+  robot:
+    name: 2 - Robot Framework
+    needs: unidade-api
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    env:
+      PYTHONIOENCODING: utf-8
+    steps:
+      - name: Baixar o código desta versão
+        uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6
+        with:
+          persist-credentials: false
+      - name: Preparar Node.js
+        uses: actions/setup-node@249970729cb0ef3589644e2896645e5dc5ba9c38 # v6
+        with:
+          node-version: '24'
+          cache: npm
+      - name: Preparar Python
+        uses: actions/setup-python@ece7cb06caefa5fff74198d8649806c4678c61a1 # v6
+        with:
+          python-version: '3.12'
+          cache: pip
+          cache-dependency-path: requirements-robot.txt
+      - name: Instalar dependências do projeto
+        run: npm ci
+      - name: Criar ambiente isolado e instalar Robot
+        run: |
+          python -m venv .venv
+          .venv/bin/python -m pip install -r requirements-robot.txt
+          .venv/bin/python -m Browser.entry init --skip-browsers
+      - name: Conferir os programas do runner
+        run: |
+          node --version
+          .venv/bin/python --version
+          google-chrome --version
+      - name: Executar os cenários Robot sem janela
+        run: npm run test:robot -- --headless --local
+      - name: Guardar relatórios e capturas mesmo se o teste falhar
+        if: always()
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
+        with:
+          name: robot-${{ github.run_id }}-${{ github.run_attempt }}
+          path: results/robot/
+          retention-days: 3
+          if-no-files-found: warn
